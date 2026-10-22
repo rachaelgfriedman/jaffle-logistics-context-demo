@@ -1,0 +1,20 @@
+{{ config(materialized='table') }}
+
+with days as (
+
+    {{
+        dbt.date_spine(
+            'day',
+            "to_date('2020-01-01')",
+            "to_date('2031-01-01')"
+        )
+    }}
+
+),
+
+final as (
+    select cast(date_day as timestamp) as date_day
+    from days
+)
+
+select * from final
